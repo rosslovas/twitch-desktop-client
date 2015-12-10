@@ -17,7 +17,6 @@ PKGCONFIG += mpv
 SOURCES += \
     main.cpp \
     MainWindow.cpp \
-    StreamsDialog.cpp \
     TwitchAPI.cpp \
     StreamPreview.cpp \
     StreamsScrollArea.cpp \
@@ -27,7 +26,6 @@ SOURCES += \
 
 HEADERS += \
     MainWindow.hpp \
-    StreamsDialog.hpp \
     TwitchAPI.hpp \
     StreamPreview.hpp \
     StreamsScrollArea.hpp \
@@ -37,7 +35,6 @@ HEADERS += \
 
 FORMS += \
     MainWindow.ui \
-    StreamsDialog.ui \
     StreamPreview.ui
 
 RESOURCES += \

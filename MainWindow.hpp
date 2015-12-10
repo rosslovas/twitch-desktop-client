@@ -7,8 +7,6 @@ namespace Ui {
 class MainWindow;
 }
 
-class StreamsDialog;
-
 class MainWindow : public QMainWindow {
 	Q_OBJECT
 
@@ -18,9 +16,11 @@ public:
 
 	void LoadChannel(const QString & channel);
 
+public slots:
+	void UpdateStreams();
+
 private:
 	Ui::MainWindow * ui;
-	StreamsDialog * streams;
 
 private slots:
 	void InjectBTTV();
