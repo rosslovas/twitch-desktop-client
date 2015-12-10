@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/qml">
+        <file>BusyIndicator.qml</file>
+        <file>PlayStopButton.qml</file>
+        <file>QualityOptions.qml</file>
+        <file>VideoPlayer.qml</file>
+        <file>VolumeSlider.qml</file>
+    </qresource>
+</RCC>

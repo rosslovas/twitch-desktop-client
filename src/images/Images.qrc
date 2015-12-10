@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>404_boxart-52x72.jpg</file>
+        <file>404_preview-320x180.jpg</file>
+    </qresource>
+</RCC>

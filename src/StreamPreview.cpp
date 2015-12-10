@@ -11,8 +11,6 @@ StreamPreview::StreamPreview(QWidget * parent /* = nullptr */)
     : QWidget(parent), ui(new Ui::StreamPreview)
 {
 	ui->setupUi(this);
-	ui->preview->setPixmap(QPixmap(":/404_preview-320x180.jpg"));
-	ui->game->setPixmap(QPixmap(":/404_boxart-52x72.jpg"));
 }
 
 StreamPreview::~StreamPreview()

@@ -34,10 +34,11 @@ HEADERS += \
     MPVQuickRenderer.hpp
 
 FORMS += \
-    MainWindow.ui \
-    StreamPreview.ui
+    ui/MainWindow.ui \
+    ui/StreamPreview.ui
 
 RESOURCES += \
-    Resources.qrc
+    qml/QML.qrc \
+    images/Images.qrc
 
 DISTFILES +=

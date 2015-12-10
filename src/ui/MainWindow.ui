@@ -115,7 +115,7 @@
            </property>
            <property name="source">
             <url>
-             <string>qrc:/BusyIndicator.qml</string>
+             <string>qrc:/qml/BusyIndicator.qml</string>
             </url>
            </property>
           </widget>
@@ -221,7 +221,7 @@
           </property>
           <property name="source">
            <url>
-            <string>qrc:/VideoPlayer.qml</string>
+            <string>qrc:/qml/VideoPlayer.qml</string>
            </url>
           </property>
          </widget>

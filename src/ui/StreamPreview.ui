@@ -80,7 +80,7 @@
        </size>
       </property>
       <property name="pixmap">
-       <pixmap resource="Resources.qrc">:/404_preview-320x180.jpg</pixmap>
+       <pixmap resource="../images/Images.qrc">:/images/404_preview-320x180.jpg</pixmap>
       </property>
      </widget>
      <widget class="QLabel" name="game">
@@ -108,7 +108,7 @@
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="Resources.qrc">:/404_boxart-52x72.jpg</pixmap>
+       <pixmap resource="../images/Images.qrc">:/images/404_boxart-52x72.jpg</pixmap>
       </property>
      </widget>
     </widget>
@@ -144,7 +144,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="Resources.qrc"/>
+  <include location="../images/Images.qrc"/>
  </resources>
  <connections/>
 </ui>
