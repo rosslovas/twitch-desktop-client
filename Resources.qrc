@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>404_preview-320x180.jpg</file>
+        <file>404_boxart-52x72.jpg</file>
+        <file>BusyIndicator.qml</file>
+        <file>VideoPlayer.qml</file>
+        <file>PlayStopButton.qml</file>
+        <file>VolumeSlider.qml</file>
+        <file>QualityOptions.qml</file>
+    </qresource>
+</RCC>
