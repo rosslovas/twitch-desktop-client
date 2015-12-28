@@ -22,85 +22,104 @@ MPVItem {
         bufferingIndicator.visible = visibility;
     }
 
-    // Top gradient
-    LinearGradient {
-        anchors.fill: parent;
-        start: Qt.point(0, 40);
-        end: Qt.point(0, 0);
-        gradient: Gradient {
-            GradientStop {
-                position: 0.0;
-                color: '#00000000';
-            }
-            GradientStop {
-                position: 1.0;
-                color: '#EE000000';
-            }
-        }
+    function setControlsVisible(value) {
+        controls.visible = value;
     }
 
-    // Bottom gradient
-    LinearGradient {
-        anchors.fill: parent;
-        start: Qt.point(0, height - 40);
-        end: Qt.point(0, height);
-        gradient: Gradient {
-            GradientStop {
-                position: 0.0;
-                color: '#00000000';
-            }
-            GradientStop {
-                position: 1.0;
-                color: '#EE000000';
-            }
-        }
-    }
-
-    PlayStopButton {
-        id: playStopButton;
-        width: 18;
-        height: 18;
+    MouseArea {
+        id: fullscreenDoubleClickArea;
         anchors.left: parent.left;
-        anchors.leftMargin: 8;
-        anchors.bottom: parent.bottom;
-        anchors.bottomMargin: 8;
-        opacity: 0.9;
-    }
-
-    VolumeSlider {
-        id: volumeSlider;
-        width: 90;
-        height: 10;
-        anchors.left: parent.left;
-        anchors.leftMargin: 38; // 8 + 18 + 12
-        anchors.bottom: parent.bottom;
-        anchors.bottomMargin: 12;
-        opacity: 0.9;
-    }
-
-    BusyIndicator {
-        id: bufferingIndicator;
-        width: 40;
-        height: 40;
-        anchors.centerIn: parent;
-        visible: false;
-    }
-
-    QualityOptions {
-        id: qualityOptions;
         anchors.right: parent.right;
-        anchors.rightMargin: 8;
+        anchors.top: parent.top;
+        anchors.topMargin: 32;
         anchors.bottom: parent.bottom;
-        anchors.bottomMargin: 8;
+        anchors.bottomMargin: 32;
     }
 
-    Button {
-        id: backButton;
-        anchors.left: parent.left;
-        anchors.leftMargin: 8;
-        anchors.top: parent.top;
-        anchors.topMargin: 8;
-        text: 'Back';
+    Item {
+        id: controls;
+        anchors.fill: parent;
+
+        // Top gradient
+        LinearGradient {
+            anchors.fill: parent;
+            start: Qt.point(0, 40);
+            end: Qt.point(0, 0);
+            gradient: Gradient {
+                GradientStop {
+                    position: 0.0;
+                    color: '#00000000';
+                }
+                GradientStop {
+                    position: 1.0;
+                    color: '#EE000000';
+                }
+            }
+        }
+
+        // Bottom gradient
+        LinearGradient {
+            anchors.fill: parent;
+            start: Qt.point(0, height - 40);
+            end: Qt.point(0, height);
+            gradient: Gradient {
+                GradientStop {
+                    position: 0.0;
+                    color: '#00000000';
+                }
+                GradientStop {
+                    position: 1.0;
+                    color: '#EE000000';
+                }
+            }
+        }
+
+        PlayStopButton {
+            id: playStopButton;
+            width: 18;
+            height: 18;
+            anchors.left: parent.left;
+            anchors.leftMargin: 8;
+            anchors.bottom: parent.bottom;
+            anchors.bottomMargin: 8;
+            opacity: 0.9;
+        }
+
+        VolumeSlider {
+            id: volumeSlider;
+            width: 90;
+            height: 10;
+            anchors.left: parent.left;
+            anchors.leftMargin: 38; // 8 + 18 + 12
+            anchors.bottom: parent.bottom;
+            anchors.bottomMargin: 12;
+            opacity: 0.9;
+        }
+
+        BusyIndicator {
+            id: bufferingIndicator;
+            width: 40;
+            height: 40;
+            anchors.centerIn: parent;
+            visible: false;
+        }
+
+        QualityOptions {
+            id: qualityOptions;
+            anchors.right: parent.right;
+            anchors.rightMargin: 8;
+            anchors.bottom: parent.bottom;
+            anchors.bottomMargin: 8;
+        }
+
+        Button {
+            id: backButton;
+            anchors.left: parent.left;
+            anchors.leftMargin: 8;
+            anchors.top: parent.top;
+            anchors.topMargin: 8;
+            text: 'Back';
+        }
     }
 
     Component.onCompleted: {
@@ -120,6 +139,10 @@ MPVItem {
         backButton.clicked.connect(function () {
             mpv.stop();
             mpv.gotoStreams();
+        });
+        fullscreenDoubleClickArea.onDoubleClicked.connect(function () {
+            console.debug('Fullscreen toggle requested');
+            mpv.toggleFullscreen();
         });
     }
 

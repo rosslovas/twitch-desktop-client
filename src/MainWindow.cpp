@@ -52,15 +52,34 @@ MainWindow::MainWindow(QWidget * parent /* = nullptr */)
 	webSettings->enablePersistentStorage(QDir("./storage").absolutePath());
 
 	// Handle the video player requesting a return to the streams grid.
-	QObject::connect(qobject_cast<MPVQuickItem *>(ui->video->rootObject()),
-	      &MPVQuickItem::gotoStreams, [this]() {
+	MPVQuickItem * mpv = qobject_cast<MPVQuickItem *>(ui->video->rootObject());
+	QObject::connect(mpv, &MPVQuickItem::gotoStreams, [this]() {
+		qDebug() << "Returning to the streams grid";
+		ui->stackedWidget->setCurrentWidget(ui->streams);
 
-		      qDebug() << "Returning to the streams grid";
-		      ui->stackedWidget->setCurrentWidget(ui->streams);
+		// Exit fullscreen mode if currently in it.
+		if (ui->chat->isHidden()) {
+			setWindowState(windowState() & ~Qt::WindowFullScreen);
+			ui->chat->show();
+		}
 
-		      // Load an "empty" page in order to unload the chat, avoiding background bandwidth use.
-		      ui->chat->setContent(QByteArray());
-		   });
+		// Load an "empty" page in order to unload the chat, avoiding background bandwidth use.
+		ui->chat->setContent(QByteArray());
+	});
+
+	// Handle the video player requesting a toggle of the fullscreen state.
+	QObject::connect(mpv, &MPVQuickItem::toggleFullscreen, [this]() {
+		qDebug() << "Toggling fullscreen";
+		// Use the hidden state of the chat to determine if we're already in fullscreen video mode.
+		if (ui->chat->isHidden()) {
+			setWindowState(windowState() & ~Qt::WindowFullScreen);
+			ui->chat->show();
+		}
+		else {
+			setWindowState(windowState() | Qt::WindowFullScreen);
+			ui->chat->hide();
+		}
+	});
 
 	// Add keyboard shortcuts.
 	shortcuts.emplace_back(new QShortcut{ QKeySequence{ "F5" }, this });
@@ -143,6 +162,7 @@ void MainWindow::UpdateStreams()
 				            qDebug() << "Clicked" << channelName;
 				            LoadChannel(channelName);
 				            ui->stackedWidget->setCurrentWidget(ui->player);
+
 				         });
 
 			      // And add it to the grid.
@@ -152,6 +172,16 @@ void MainWindow::UpdateStreams()
 		      // Lay out the grid properly.
 		      ui->scrollArea->RearrangeGrid();
 		   });
+}
+
+void MainWindow::changeEvent(QEvent * event)
+{
+	// Handle the loss of fullscreen mode via external means.
+	if (event->type() == QEvent::WindowStateChange) {
+		if ((windowState() & Qt::WindowFullScreen) == 0 && ui->chat->isHidden()) {
+			ui->chat->show();
+		}
+	}
 }
 
 void MainWindow::InjectBTTV()

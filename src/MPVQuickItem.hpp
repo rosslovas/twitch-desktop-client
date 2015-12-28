@@ -1,6 +1,7 @@
 #ifndef MPVQUICKITEM_HPP
 #define MPVQUICKITEM_HPP
 
+#include <atomic>
 #include <memory>
 
 #include <QQuickItem>
@@ -12,6 +13,8 @@
 #include "MPVQuickRenderer.hpp"
 
 struct mpv_opengl_cb_context;
+
+class QNetworkReply;
 
 class MPVQuickItem : public QQuickItem {
 	Q_OBJECT
@@ -32,6 +35,7 @@ signals:
 	void play();
 	void stop();
 	void gotoStreams();
+	void toggleFullscreen();
 
 	// Signals for the state machine operations.
 	void ChannelLoading();
@@ -52,6 +56,7 @@ private:
 	QStateMachine stateMachine;
 	std::unique_ptr<MPVQuickRenderer> renderer;
 	mpv::qt::Handle mpv;
+	std::shared_ptr<std::atomic<QNetworkReply *> > streamPlaylistNetworkReply;
 
 	QString channelToLoad;
 	QString fileToLoad;

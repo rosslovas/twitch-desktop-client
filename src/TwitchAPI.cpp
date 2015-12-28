@@ -74,8 +74,9 @@ void TwitchAPI::GetLiveFollowedChannelsForUsername(
 		   });
 }
 
-void TwitchAPI::GetStreamPlaylist(
-      const QString & channel, std::function<void(const QHash<QString, QByteArray> &)> onCompletion)
+void TwitchAPI::GetStreamPlaylist(const QString & channel,
+      std::function<void(const QHash<QString, QByteArray> &)> onCompletion,
+      std::shared_ptr<std::atomic<QNetworkReply *> > currentReply /* = nullptr */)
 {
 	// Request the access token from Twitch.
 	QNetworkRequest request{ QUrl("https://api.twitch.tv/api/channels/"
@@ -86,7 +87,9 @@ void TwitchAPI::GetStreamPlaylist(
 
 	// Handle the JSON response when it comes.
 	auto reply = NetworkAccessManager::Get()->get(request);
-	QObject::connect(reply, &QNetworkReply::finished, [reply, channel, onCompletion]() {
+	*currentReply = reply;
+	QObject::connect(reply, &QNetworkReply::finished, [reply, currentReply, channel,
+	                                                        onCompletion]() {
 
 		// Use 'sig' and 'token' from the access_token response to get access to the playlist.
 		auto response = QJsonDocument::fromJson(reply->readAll());
@@ -106,7 +109,9 @@ void TwitchAPI::GetStreamPlaylist(
 
 		// Send the request for a playlist and handle the response when it comes.
 		auto reply = NetworkAccessManager::Get()->get(QNetworkRequest(url));
-		QObject::connect(reply, &QNetworkReply::finished, [reply, onCompletion]() {
+		*currentReply = reply;
+		QObject::connect(reply, &QNetworkReply::finished, [reply, currentReply, onCompletion]() {
+			*currentReply = nullptr;
 
 			// Parse the M3U8 format just enough to get the quality and its URL.
 			auto playlist = reply->readAll();

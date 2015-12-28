@@ -2,6 +2,7 @@
 
 #include <QApplication>
 #include <QEvent>
+#include <QNetworkReply>
 #include <QQuickWindow>
 #include <QSignalTransition>
 
@@ -20,7 +21,11 @@ namespace local {
 }
 
 MPVQuickItem::MPVQuickItem()
-    : renderer{ nullptr }, channelToLoad{ "" }, fileToLoad{ "" }, desiredQuality{ "" }
+    : renderer{ nullptr }
+    , streamPlaylistNetworkReply{ std::make_shared<std::atomic<QNetworkReply *> >(nullptr) }
+    , channelToLoad{ "" }
+    , fileToLoad{ "" }
+    , desiredQuality{ "" }
 {
 	// Set up the state machine.
 	auto idle = new QState();
@@ -35,7 +40,6 @@ MPVQuickItem::MPVQuickItem()
 	auto buffering = new QState(pausableStates);
 	pausableStates->setInitialState(loading);
 
-	idle->addTransition(this, &MPVQuickItem::ChannelLoading, active);
 	idle->addTransition(this, &MPVQuickItem::FileLoaded, active);
 	active->addTransition(this, &MPVQuickItem::Stop, idle);
 	unpaused->addTransition(this, &MPVQuickItem::Pause, paused);
@@ -109,7 +113,13 @@ MPVQuickItem::MPVQuickItem()
 			      // Set the current file then emit a signal that will tell mpv to load it.
 			      fileToLoad = qualities.value(desiredQuality);
 			      emit FileLoading();
-			   });
+			   }, streamPlaylistNetworkReply);
+	});
+
+	QObject::connect(this, &MPVQuickItem::Stop, [this]() {
+		if (*streamPlaylistNetworkReply != nullptr) {
+			streamPlaylistNetworkReply->load()->abort();
+		}
 	});
 
 	// Make the FileLoading signal tell mpv to load the current file.

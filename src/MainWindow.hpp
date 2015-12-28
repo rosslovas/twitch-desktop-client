@@ -23,6 +23,9 @@ public:
 public slots:
 	void UpdateStreams();
 
+protected:
+	void changeEvent(QEvent * event) override;
+
 private:
 	Ui::MainWindow * ui;
 	std::vector<QShortcut *> shortcuts;

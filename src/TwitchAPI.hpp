@@ -1,10 +1,14 @@
 #ifndef TWITCHAPI_HPP
 #define TWITCHAPI_HPP
 
+#include <atomic>
 #include <functional>
+#include <memory>
 
 #include <QtCore>
 #include <QJsonObject>
+
+class QNetworkReply;
 
 namespace TwitchAPI {
 
@@ -22,7 +26,8 @@ void GetLiveFollowedChannelsForUsername(
 
 // Get a stream playlist.
 void GetStreamPlaylist(const QString & channel,
-      std::function<void(const QHash<QString, QByteArray> &)> onCompletion);
+      std::function<void(const QHash<QString, QByteArray> &)> onCompletion,
+      std::shared_ptr<std::atomic<QNetworkReply *> > currentReply = nullptr);
 };
 
 #endif // TWITCHAPI_HPP
