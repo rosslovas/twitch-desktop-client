@@ -2,6 +2,8 @@
 #include "ui_MainWindow.h"
 
 #include <QDir>
+#include <QKeySequence>
+#include <QShortcut>
 #include <QWebFrame>
 
 #include "MPVQuickItem.hpp"
@@ -59,6 +61,14 @@ MainWindow::MainWindow(QWidget * parent /* = nullptr */)
 		      // Load an "empty" page in order to unload the chat, avoiding background bandwidth use.
 		      ui->chat->setContent(QByteArray());
 		   });
+
+	// Add keyboard shortcuts.
+	shortcuts.emplace_back(new QShortcut{ QKeySequence{ "F5" }, this });
+	QObject::connect(shortcuts.back(), &QShortcut::activated, [this]() {
+		if (ui->stackedWidget->currentWidget() == ui->streams) {
+			ui->refreshButton->animateClick();
+		}
+	});
 }
 
 MainWindow::~MainWindow()

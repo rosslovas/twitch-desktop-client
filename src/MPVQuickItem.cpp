@@ -1,5 +1,6 @@
 #include "MPVQuickItem.hpp"
 
+#include <QApplication>
 #include <QEvent>
 #include <QQuickWindow>
 #include <QSignalTransition>
@@ -91,11 +92,15 @@ MPVQuickItem::MPVQuickItem()
 		if (window) {
 			QObject::connect(window, &QQuickWindow::beforeSynchronizing, this, &MPVQuickItem::Sync,
 			      Qt::DirectConnection);
-			QObject::connect(window, &QQuickWindow::sceneGraphInvalidated, this,
-			      &MPVQuickItem::Cleanup, Qt::DirectConnection);
+			// QObject::connect(window, &QQuickWindow::sceneGraphInvalidated, this,
+			//      &MPVQuickItem::Cleanup, Qt::DirectConnection);
 			window->setClearBeforeRendering(false);
 		}
 	});
+
+	// Kill the rendererer before the application quits to avoid mpv assertion failure on exit.
+	QObject::connect(
+	      QApplication::instance(), &QApplication::aboutToQuit, [this]() { renderer.reset(); });
 
 	// Make the ChannelLoading signal load the available qualities and pick a stream file.
 	QObject::connect(this, &MPVQuickItem::ChannelLoading, [this]() {
@@ -266,9 +271,4 @@ void MPVQuickItem::Sync()
 		// Now that mpv is ready, start the state machine.
 		stateMachine.start();
 	}
-}
-
-void MPVQuickItem::Cleanup()
-{
-	qDebug() << "MPVQuickItem::Cleanup";
 }
