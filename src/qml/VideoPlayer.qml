@@ -22,6 +22,24 @@ MPVItem {
         bufferingIndicator.visible = visibility;
     }
 
+    // Top gradient
+    LinearGradient {
+        anchors.fill: parent;
+        start: Qt.point(0, 40);
+        end: Qt.point(0, 0);
+        gradient: Gradient {
+            GradientStop {
+                position: 0.0;
+                color: '#00000000';
+            }
+            GradientStop {
+                position: 1.0;
+                color: '#EE000000';
+            }
+        }
+    }
+
+    // Bottom gradient
     LinearGradient {
         anchors.fill: parent;
         start: Qt.point(0, height - 40);

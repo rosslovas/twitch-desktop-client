@@ -212,7 +212,7 @@ bool MPVQuickItem::event(QEvent * e)
 				}
 			} break;
 			default:
-				qDebug() << "Unhandled mpvEvent:" << mpvEvent->event_id;
+				// qDebug() << "Unhandled mpvEvent:" << mpvEvent->event_id;
 				break;
 			}
 		}
