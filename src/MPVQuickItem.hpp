@@ -46,7 +46,7 @@ signals:
 
 public slots:
 	void Sync();
-	void Cleanup();
+	// void Cleanup();
 
 private:
 	QStateMachine stateMachine;
