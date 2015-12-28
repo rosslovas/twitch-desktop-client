@@ -31,6 +31,7 @@ signals:
 	void setQuality(const QString & quality);
 	void play();
 	void stop();
+	void gotoStreams();
 
 	// Signals for the state machine operations.
 	void ChannelLoading();

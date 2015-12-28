@@ -76,6 +76,15 @@ MPVItem {
         anchors.bottomMargin: 8;
     }
 
+    Button {
+        id: backButton;
+        anchors.left: parent.left;
+        anchors.leftMargin: 8;
+        anchors.top: parent.top;
+        anchors.topMargin: 8;
+        text: 'Back';
+    }
+
     Component.onCompleted: {
         console.debug('MPVItem startup');
         playStopButton.playButtonClicked.connect(function () {
@@ -89,6 +98,10 @@ MPVItem {
         });
         qualityOptions.setQuality.connect(function (quality) {
             mpv.setQuality(quality);
+        });
+        backButton.clicked.connect(function () {
+            mpv.stop();
+            mpv.gotoStreams();
         });
     }
 

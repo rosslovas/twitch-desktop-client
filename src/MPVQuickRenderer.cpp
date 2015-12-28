@@ -50,8 +50,9 @@ MPVQuickRenderer::MPVQuickRenderer(
 
 MPVQuickRenderer::~MPVQuickRenderer()
 {
-	if (mpvGL)
+	if (mpvGL) {
 		mpv_opengl_cb_set_update_callback(mpvGL, nullptr, nullptr);
+	}
 	mpv_opengl_cb_uninit_gl(mpvGL);
 }
 

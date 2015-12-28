@@ -270,5 +270,5 @@ void MPVQuickItem::Sync()
 
 void MPVQuickItem::Cleanup()
 {
-	renderer.reset();
+	qDebug() << "MPVQuickItem::Cleanup";
 }

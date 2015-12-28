@@ -48,6 +48,17 @@ MainWindow::MainWindow(QWidget * parent /* = nullptr */)
 	webSettings->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
 	webSettings->setAttribute(QWebSettings::JavascriptCanOpenWindows, true);
 	webSettings->enablePersistentStorage(QDir("./storage").absolutePath());
+
+	// Handle the video player requesting a return to the streams grid.
+	QObject::connect(qobject_cast<MPVQuickItem *>(ui->video->rootObject()),
+	      &MPVQuickItem::gotoStreams, [this]() {
+
+		      qDebug() << "Returning to the streams grid";
+		      ui->stackedWidget->setCurrentWidget(ui->streams);
+
+		      // Load an "empty" page in order to unload the chat, avoiding background bandwidth use.
+		      ui->chat->setContent(QByteArray());
+		   });
 }
 
 MainWindow::~MainWindow()
